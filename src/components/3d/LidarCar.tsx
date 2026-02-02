@@ -4,6 +4,10 @@ import { useRef, useLayoutEffect, Suspense, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment, ContactShadows, Float, Grid } from "@react-three/drei";
 import * as THREE from "three";
+import TopLoadingBar from "@/components/TopLoadingBar";
+import PointCloudRoad from "./PointCloudRoad";
+import PointCloudTrees from "./PointCloudTrees";
+import PointCloudPedestrians from "./PointCloudPedestrians";
 
 function FerrariModel() {
     const groupRef = useRef<THREE.Group>(null);
@@ -62,12 +66,16 @@ function FerrariModel() {
         setTimeout(() => setHasEntered(true), 100);
     }, [scene]);
 
-    useFrame(() => {
+    useFrame((state, delta) => {
         if (!groupRef.current) return;
 
-        // Rotate wheels based on movement
+        // Rotate wheels based on road speed (20 units/s)
+        // Angular velocity = Linear Velocity / Radius
+        // Approx wheel radius ~0.35 (scaled 1.1) -> 20 / 0.35 ≈ 57
+        const rotationSpeed = 57 * delta;
+
         wheelsRef.current.forEach((wheel) => {
-            wheel.rotation.x -= 0.05; // Rolling effect
+            wheel.rotation.x -= rotationSpeed;
         });
 
         // Entrance animation: Drive in from right
@@ -148,6 +156,9 @@ export default function LidarCar() {
                         sectionColor="#333"
                         cellColor="#111"
                     />
+                    <PointCloudRoad />
+                    <PointCloudTrees />
+                    <PointCloudPedestrians />
                 </Suspense>
 
                 <ContactShadows resolution={1024} scale={50} blur={2} opacity={0.8} far={10} color="#000000" />
