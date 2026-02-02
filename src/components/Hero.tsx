@@ -59,10 +59,10 @@ export default function Hero() {
                     </div>
 
                     <div className="flex gap-8">
-                        <a href="https://github.com/anurajkumar23" target="_blank" className="text-gray-400 hover:text-white transition-colors">
+                        <a href="https://github.com/dhruvaditya" target="_blank" className="text-gray-400 hover:text-white transition-colors">
                             <Github size={28} />
                         </a>
-                        <a href="https://linkedin.com/in/aditya-raj" target="_blank" className="text-gray-400 hover:text-white transition-colors">
+                        <a href="https://linkedin.com/in/dhruvaditya" target="_blank" className="text-gray-400 hover:text-white transition-colors">
                             <Linkedin size={28} />
                         </a>
                         <a href="mailto:official.dhruvaditya@gmail.com" className="text-gray-400 hover:text-white transition-colors">
