@@ -7,14 +7,14 @@ const experiences = [
         company: "Top Stack Pvt. Ltd.",
         role: "Data Engineering Instructor",
         period: "Feb 2025 - Current",
-        description: "Conducting online classes for SQL, Hadoop, Hive, Kafka, Spark, Snowflake, AWS, and Big Data technologies.",
+        description: "Conducting online classes for SQL, Hadoop, Hive, Kafka, Spark, Snowflake, AWS, and Big Data technologies. Training professionals and students in modern data engineering practices and cloud-native data solutions.",
         type: "Remote",
     },
     {
         company: "Promact Infotech",
         role: "Software Engineer Intern",
         period: "Dec 2023 - Apr 2024",
-        description: "Designed AI-powered chatbots and architected JWT-secured REST APIs. Improved feature adoption by 20% through scalable backend solutions.",
+        description: "Designed and implemented client-facing AI-powered chatbots, improving user engagement and reducing manual support effort. Architected JWT-secured REST APIs enabling safe integration of generative AI services across five client applications.",
         type: "Vadodara",
     }
 ];
@@ -29,7 +29,8 @@ export default function Experience() {
                     viewport={{ once: true }}
                     className="mb-12"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">Professional Experience</h2>
+                    <h2 className="text-4xl md:text-5xl font-bold mb-3 text-white">Professional Experience</h2>
+                    <p className="text-gray-400 mb-6">Building scalable systems and AI solutions</p>
                     <div className="w-20 h-1 bg-primary rounded-full"></div>
                 </motion.div>
 

@@ -13,7 +13,8 @@ export default function Education() {
                     viewport={{ once: true }}
                     className="mb-12"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">Education</h2>
+                    <h2 className="text-4xl md:text-5xl font-bold mb-3 text-white">Education</h2>
+                    <p className="text-gray-400 mb-6">Academic background and qualifications</p>
                     <div className="w-20 h-1 bg-primary rounded-full"></div>
                 </motion.div>
 

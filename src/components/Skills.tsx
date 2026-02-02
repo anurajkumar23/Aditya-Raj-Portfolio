@@ -32,7 +32,8 @@ export default function Skills() {
                     viewport={{ once: true }}
                     className="mb-12"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">Technical Skills</h2>
+                    <h2 className="text-4xl md:text-5xl font-bold mb-3 text-white">Technical Skills</h2>
+                    <p className="text-gray-400 mb-6">Modern technologies and frameworks</p>
                     <div className="w-20 h-1 bg-primary rounded-full"></div>
                 </motion.div>
 

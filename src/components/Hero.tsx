@@ -7,9 +7,7 @@ import Link from "next/link";
 
 export default function Hero() {
     return (
-        <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
-            {/* 3D Background */}
-            {/* Gradient Overlay for Text Readability - Lighter to show car */}
+        <section id="home" className="relative min-h-screen flex flex-col justify-center py-20 lg:py-24 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent z-0 pointer-events-none" />
 
             <div className="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center w-full">
@@ -21,7 +19,7 @@ export default function Hero() {
                 >
                     <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 text-sm font-semibold tracking-wider text-primary uppercase bg-white/5 rounded-full border border-white/10 backdrop-blur-md">
                         <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                        Technological Consultant
+                        Data Engineer
                     </div>
 
                     <h1 className="text-6xl md:text-8xl font-bold tracking-tighter text-white mb-6 leading-[0.9]">
@@ -36,7 +34,7 @@ export default function Hero() {
                         <span className="block text-primary/80 mt-2">Specializing in LiDAR & Autonomous Systems.</span>
                     </p>
 
-                    <div className="flex flex-wrap gap-4">
+                    <div className="flex flex-wrap gap-4 mb-4">
                         <motion.div
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
@@ -50,7 +48,7 @@ export default function Hero() {
                             </Link>
                         </motion.div>
                         <motion.a
-                            href="/resume.pdf"
+                            href="https://drive.google.com/file/d/1VCmJRKIfunMpVW3STPu427kbEbmmoglF/view?usp=drivesdk"
                             target="_blank"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
@@ -60,8 +58,8 @@ export default function Hero() {
                         </motion.a>
                     </div>
 
-                    <div className="flex gap-8 mt-16">
-                        <a href="https://github.com/aditya-raj" target="_blank" className="text-gray-400 hover:text-white transition-colors">
+                    <div className="flex gap-8">
+                        <a href="https://github.com/anurajkumar23" target="_blank" className="text-gray-400 hover:text-white transition-colors">
                             <Github size={28} />
                         </a>
                         <a href="https://linkedin.com/in/aditya-raj" target="_blank" className="text-gray-400 hover:text-white transition-colors">

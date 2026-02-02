@@ -8,7 +8,10 @@ import { Menu, X } from "lucide-react";
 const navLinks = [
     { name: "Experience", href: "#experience" },
     { name: "Projects", href: "#projects" },
+    { name: "Publications", href: "#publications" },
     { name: "Skills", href: "#skills" },
+    { name: "Achievements", href: "#achievements" },
+    { name: "Certifications", href: "#certifications" },
     { name: "Education", href: "#education" },
     { name: "Contact", href: "#contact" },
 ];
@@ -20,7 +23,7 @@ export default function Navbar() {
         <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-black/50 border-b border-white/10">
             <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
                 <Link href="#home" className="text-xl font-bold tracking-tight text-white">
-                    Aditya<span className="text-primary">Raj</span>
+                    Aditya<span className="text-primary"> Raj</span>
                 </Link>
 
                 {/* Desktop Links */}
