@@ -2,67 +2,75 @@
 
 import { useRef, useLayoutEffect, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, Environment, ContactShadows, Float, Html } from "@react-three/drei";
+import { useGLTF, Environment, ContactShadows, Float, Grid } from "@react-three/drei";
 import * as THREE from "three";
 
 function FerrariModel() {
     const groupRef = useRef<THREE.Group>(null);
-    // Use raw GitHub URL which is more reliable for CORS
-    const { scene } = useGLTF("https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/ferrari.glb", true); // true enables draco
+    const { scene } = useGLTF("https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/ferrari.glb");
 
     useLayoutEffect(() => {
-        // Enhance materials for that "showroom" look
-        Object.values(scene.children).forEach((child: any) => {
-            if (child.isMesh) {
-                // Apply specific materials if needed, but the GLB usually comes with them.
-                // We can tweak the body color if we want to match the portfolio theme (Orange/Primary)
-                if (child.name.includes("body")) {
-                    child.material = new THREE.MeshPhysicalMaterial({
-                        color: "#ff6b00", // Portfolio Primary Orange
+        scene.traverse((obj: any) => {
+            if (obj.isMesh) {
+                // Apply different materials based on part names
+                if (obj.name.includes("body") || obj.name === "carbon_fibre_shield") {
+                    obj.material = new THREE.MeshPhysicalMaterial({
+                        color: "#FF6B00",
+                        emissive: "#000000",
                         metalness: 0.6,
                         roughness: 0.2,
                         clearcoat: 1.0,
                         clearcoatRoughness: 0.03,
+                        reflectivity: 1.0,
+                    });
+                } else if (obj.name.includes("glass") || obj.name.includes("window")) {
+                    obj.material = new THREE.MeshPhysicalMaterial({
+                        color: "#000000",
+                        metalness: 0.0, // Glass isn't metallic
+                        roughness: 0.0,
+                        transmission: 0.9, // High transmission for transparency
+                        transparent: true,
+                        opacity: 1, // Let transmission handle visibility
+                        ior: 1.8, // Glass index of refraction
+                    });
+                } else if (obj.name.includes("rim") || obj.name.includes("wheel")) {
+                    obj.material = new THREE.MeshStandardMaterial({
+                        color: "#cccccc",
+                        metalness: 0.9,
+                        roughness: 0.2,
+                    });
+                } else {
+                    // Default dark chrome details
+                    obj.material = new THREE.MeshStandardMaterial({
+                        color: "#111111",
+                        metalness: 0.8,
+                        roughness: 0.4,
                     });
                 }
             }
         });
-
-        // Traverse to find body parts if names aren't top level
-        scene.traverse((obj: any) => {
-            if (obj.isMesh && obj.name === "body") {
-                obj.material = new THREE.MeshPhysicalMaterial({
-                    color: "#ff6b00", // Portfolio Primary Orange
-                    metalness: 0.6,
-                    roughness: 0.2,
-                    clearcoat: 1.0,
-                    clearcoatRoughness: 0.03,
-                });
-            }
-        });
-
     }, [scene]);
 
-    useFrame((state) => {
+    useFrame(() => {
         if (!groupRef.current) return;
 
-        // Scroll-driven path animation (Dora.ai style)
+        // Scroll-driven animation logic
         const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollProgress = Math.min(Math.max(window.scrollY / scrollMax, 0), 1);
+        // Safety check for divide by zero
+        const scrollProgress = scrollMax > 0 ? Math.min(Math.max(window.scrollY / scrollMax, 0), 1) : 0;
 
-        // Keyframes logic adapted for the real model scale
-        let targetPos = new THREE.Vector3(0, -0.6, 0); // Ground level roughly
+        // Keyframes for "Sliding" movement
+        let targetPos = new THREE.Vector3(0, -0.6, 0);
         let targetRot = new THREE.Euler(0, 0, 0);
 
         if (scrollProgress < 0.25) {
-            // Hero -> Experience (Move Right)
+            // Hero -> Experience (Move Right & Rotate)
             const t = scrollProgress / 0.25;
             targetPos.set(
                 THREE.MathUtils.lerp(0, 3.5, t),
                 -0.6,
                 THREE.MathUtils.lerp(0, 0, t)
             );
-            // Start facing Front (Math.PI) and rotate to side
             targetRot.set(0, THREE.MathUtils.lerp(Math.PI + 0.5, Math.PI, t), 0);
         } else if (scrollProgress < 0.50) {
             // Experience -> Projects (Move Left)
@@ -85,49 +93,51 @@ function FerrariModel() {
         } else {
             // Skills -> Contact (Drive Away)
             const t = (scrollProgress - 0.75) / 0.25;
-            targetPos.set(
-                0,
-                -0.6,
-                THREE.MathUtils.lerp(0, -10, t)
-            );
+            targetPos.set(0, -0.6, THREE.MathUtils.lerp(0, -10, t));
             targetRot.set(0, 0, 0);
         }
 
-        // Smooth interpolation
-        groupRef.current.position.lerp(targetPos, 0.08); // Slightly heavier feel for real car
-
-        // Manual Euler rotation smoothing
+        // Apply smooth interpolation
+        groupRef.current.position.lerp(targetPos, 0.08);
         groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRot.x, 0.08);
         groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRot.y, 0.08);
         groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, targetRot.z, 0.08);
-
-        // Wheel rotation simulation (visual only)
-        // Ideally we'd animate wheels but the whole car moving is fine for now
     });
 
-    return <primitive ref={groupRef} object={scene} scale={0.9} />;
+    return <primitive ref={groupRef} object={scene} scale={1.1} position={[1.2, -0.8, 0]} />;
 }
 
 export default function LidarCar() {
     return (
-        <div className="fixed inset-0 w-full h-full z-0 pointer-events-none">
-            <Canvas camera={{ position: [4, 1.5, 5], fov: 45 }} gl={{ antialias: true }} shadows>
-                <ambientLight intensity={0.5} />
-                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
-
-                <Environment preset="city" />
+        <div className="fixed inset-0 w-full h-full z-[-1] pointer-events-none">
+            <Canvas camera={{ position: [5, 2, 5], fov: 45 }}>
+                <fog attach="fog" args={['#050505', 5, 25]} />
+                <ambientLight intensity={1.0} />
+                <spotLight position={[10, 10, 10]} angle={0.2} penumbra={1} intensity={2} color="#ffffff" />
+                <spotLight position={[-10, 5, -10]} angle={0.2} penumbra={1} intensity={1} color="#ff6b00" />
 
                 <Suspense fallback={null}>
-                    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.2}>
-                        {/* Corrected scale for Ferrari model */}
+                    <Float speed={2} rotationIntensity={0.1} floatIntensity={0.2}>
                         <FerrariModel />
                     </Float>
+                    <Environment preset="city" />
+                    <Grid
+                        renderOrder={-1}
+                        position={[0, -0.85, 0]}
+                        infiniteGrid
+                        cellSize={0.6}
+                        sectionSize={3}
+                        fadeDistance={25}
+                        sectionColor="#333"
+                        cellColor="#111"
+                    />
                 </Suspense>
 
-                <ContactShadows resolution={1024} scale={20} blur={2} opacity={0.6} far={10} color="#000000" />
+                <ContactShadows resolution={1024} scale={50} blur={2} opacity={0.8} far={10} color="#000000" />
             </Canvas>
         </div>
     );
 }
 
+// Preload the model
 useGLTF.preload("https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/ferrari.glb");

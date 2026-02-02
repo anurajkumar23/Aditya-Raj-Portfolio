@@ -9,8 +9,8 @@ export default function Hero() {
     return (
         <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
             {/* 3D Background */}
-            {/* Gradient Overlay for Text Readability */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-0 pointer-events-none" />
+            {/* Gradient Overlay for Text Readability - Lighter to show car */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent z-0 pointer-events-none" />
 
             <div className="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center w-full">
                 <motion.div
