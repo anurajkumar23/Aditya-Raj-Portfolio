@@ -5,12 +5,18 @@ import Lenis from "lenis";
 
 export default function SmoothScroll() {
     useEffect(() => {
+        // Prevent browser from restoring scroll position which causes 'sticky' jumps
+        if ("scrollRestoration" in history) {
+            history.scrollRestoration = "manual";
+        }
+
         const lenis = new Lenis({
-            duration: 1.2,
+            duration: 1.5, // Slower, smoother duration
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             orientation: "vertical",
             gestureOrientation: "vertical",
             smoothWheel: true,
+            wheelMultiplier: 1.2, // More responsive wheel
             touchMultiplier: 2,
         });
 
